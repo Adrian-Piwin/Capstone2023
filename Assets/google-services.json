@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "266546915325",
+    "firebase_url": "https://capstone2023-83950-default-rtdb.firebaseio.com",
+    "project_id": "capstone2023-83950",
+    "storage_bucket": "capstone2023-83950.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266546915325:android:ea2d050be66ef6eb5e9b94",
+        "android_client_info": {
+          "package_name": "com.adrianscapstone.campuscompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266546915325-a6rdk499kb1ft6si6flqrjqjgljl5jba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVjuwkjaBb-TgZ_Y4iKr8WRwg5VvVtOwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266546915325-a6rdk499kb1ft6si6flqrjqjgljl5jba.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "266546915325-4hpi0i3rqnaibhl8kos721kdb9ifj4l3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.adrianscapstone.campuscompanion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
