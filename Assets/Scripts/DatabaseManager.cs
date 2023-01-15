@@ -1,45 +1,48 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
 using Firebase.Database;
-using System;
-using Firebase.Extensions;
+using System.Threading.Tasks;
 
 public class DatabaseManager : MonoBehaviour
 {
-    public DatabaseReference dbReference;
+    public bool isActive;
+    public List<POI> locations;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+        locations = new List<POI>();
+
+        GetPOILocations();
     }
 
-    public List<POI> GetPOILocations() 
+    public void GetPOILocations()
     {
-        List<POI> locations = new List<POI>();
 
-        FirebaseDatabase.DefaultInstance
-            .GetReference("POI")
-            .GetValueAsync().ContinueWithOnMainThread(task => {
-                if (task.IsFaulted)
-                {
+        UnityMainThreadDispatcher.Instance().Enqueue(() => {
+            FirebaseDatabase.DefaultInstance
+           .GetReference("POI")
+           .GetValueAsync().ContinueWith(task =>
+           {
+               if (task.IsFaulted)
+               {
                     // Error handling
-                    Debug.Log(task.Exception);
-                }
-                else if (task.IsCompleted)
-                {
+                    Debug.Log("Firebase error");
+               }
+               else if (task.IsCompleted)
+               {
+
                     // Read snapshot
-                    DataSnapshot snapshot = task.Result;
-                    foreach (var place in snapshot.Children)
-                    {
-                        locations.Add(JsonUtility.FromJson<POI>(place.GetRawJsonValue()));
-                    }
-
-                }
-            });
-
-        return locations;
+                   Debug.Log("Firebase success");
+                   DataSnapshot snapshot = task.Result;
+                   foreach (var place in snapshot.Children)
+                   {
+                       locations.Add(JsonUtility.FromJson<POI>(place.GetRawJsonValue()));
+                   }
+                   Debug.Log(locations[0]);
+                   isActive = true;
+               }
+           });
+        });
     }
+
 }
