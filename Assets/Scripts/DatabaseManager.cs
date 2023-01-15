@@ -4,6 +4,7 @@ using UnityEngine;
 using Firebase;
 using Firebase.Database;
 using System;
+using Firebase.Extensions;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -15,16 +16,30 @@ public class DatabaseManager : MonoBehaviour
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public IEnumerator GetPOILocations(Action<List<POI>> onCallback) 
+    public List<POI> GetPOILocations() 
     {
-        var poiData = dbReference.Child("POI").GetValueAsync();
+        List<POI> locations = new List<POI>();
 
-        yield return new WaitUntil(predicate: () => poiData.IsCompleted);
+        FirebaseDatabase.DefaultInstance
+            .GetReference("POI")
+            .GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsFaulted)
+                {
+                    // Error handling
+                    Debug.Log(task.Exception);
+                }
+                else if (task.IsCompleted)
+                {
+                    // Read snapshot
+                    DataSnapshot snapshot = task.Result;
+                    foreach (var place in snapshot.Children)
+                    {
+                        locations.Add(JsonUtility.FromJson<POI>(place.GetRawJsonValue()));
+                    }
 
-        if (poiData != null)
-        {
-            DataSnapshot snapshot = poiData.Result;
-            onCallback.Invoke((List<POI>)snapshot.Value);
-        }
-    } 
+                }
+            });
+
+        return locations;
+    }
 }
