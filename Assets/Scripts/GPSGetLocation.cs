@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GPSGetLocation : MonoBehaviour
 {
-    public bool isActive;
+    public bool isGPSReady;
     public bool isUnityRemote;
     public float gpsUpdateInterval;
     public double userLocationLongitude;
@@ -15,7 +15,6 @@ public class GPSGetLocation : MonoBehaviour
     // Start is called before the first frame update
    public void Start()
     {
-        isActive = false;
         StartCoroutine(GPSLoc());
     }
 
@@ -61,7 +60,6 @@ public class GPSGetLocation : MonoBehaviour
         // Success
         else
         {
-            Debug.Log("Success");
             InvokeRepeating("UpdateGPSData", gpsUpdateInterval, 1f);
         }
     }//end of gpsloc
@@ -70,7 +68,7 @@ public class GPSGetLocation : MonoBehaviour
     {
         if (Input.location.status == LocationServiceStatus.Running)
         {
-            isActive = true;
+            isGPSReady = true;
             userLocationLatitude = Input.location.lastData.latitude;
             userLocationLongitude = Input.location.lastData.longitude;
         }
