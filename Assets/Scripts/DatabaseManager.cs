@@ -35,13 +35,10 @@ public class DatabaseManager : MonoBehaviour
            {
                if (task.IsFaulted)
                {
-                    // Error handling
                     Debug.Log("Firebase error");
                }
                else if (task.IsCompleted)
                {
-
-                    // Read snapshot
                    DataSnapshot snapshot = task.Result;
                    foreach (var place in snapshot.Children)
                    {
@@ -67,10 +64,7 @@ public class DatabaseManager : MonoBehaviour
                 UnityWebRequest www = UnityWebRequest.Get(task.Result);
                 www.SendWebRequest();
 
-                while (!www.isDone)
-                {
-                    Debug.Log(www.downloadProgress);
-                }
+                while (!www.isDone) {}
 
                 if (www.isNetworkError || www.isHttpError)
                 {
