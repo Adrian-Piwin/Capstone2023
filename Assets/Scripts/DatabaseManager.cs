@@ -57,44 +57,38 @@ public class DatabaseManager : MonoBehaviour
     public void GetPOIImage(string path) 
     {
         FirebaseStorage storage = FirebaseStorage.DefaultInstance;
-        var storageReference = storage.GetReferenceFromUrl("gs://capstone2023-83950.appspot.com/");
-        StorageReference imageRef = storageReference.Child(path);
-        Debug.Log(path);
+        StorageReference storageReference = storage.GetReferenceFromUrl("gs://capstone2023-83950.appspot.com/" + path);
 
-        string localUrl = "file:///local/images/" + path;
-
-        if (System.IO.File.Exists(localUrl))
-        {
-            // Use image in local filesystem
-            CreateImage(localUrl);
-        }
-        else
-        {
-            // Download to the local filesystem
-            imageRef.GetFileAsync(localUrl).ContinueWithOnMainThread(task =>
+        storageReference.GetDownloadUrlAsync().ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
             {
-                if (!task.IsFaulted && !task.IsCanceled)
+                Debug.Log("Download URL: " + task.Result);
+
+                UnityWebRequest www = UnityWebRequest.Get(task.Result);
+                www.SendWebRequest();
+
+                while (!www.isDone)
                 {
-                    Debug.Log("downloaded");
-                    CreateImage(localUrl);
+                    Debug.Log(www.downloadProgress);
                 }
-            });
-        }
+
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    Debug.Log(www.error);
+                }
+                else
+                {
+                    CreateImage(www.downloadHandler.data);
+                }
+            }
+        });
     }
 
-    private void CreateImage(string localUrl) 
+    private void CreateImage(byte[] fileData) 
     {
-        byte[] fileData = System.IO.File.ReadAllBytes(localUrl);
-        Debug.Log("WHA1");
-
         Texture2D texture = new Texture2D(2, 2);
-        Debug.Log("WHA2");
-
         texture.LoadImage(fileData);
-        Debug.Log("WHA3");
-
         image = texture;
-        Debug.Log("WHA4");
 
         isImageReady = true;
     }
