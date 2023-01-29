@@ -117,7 +117,7 @@ public class NavigationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isGPSReady || !isFirebaseLocationsReady || isFirebaseImageReady) return;
+        if (!isGPSReady || !isFirebaseLocationsReady || !isFirebaseImageReady) return;
         else loadingScreen.SetActive(false);
 
         // Update current location
