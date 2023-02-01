@@ -10,7 +10,7 @@ public class CheckCollision : MonoBehaviour
     public float speed;
 
     private Rigidbody body;
-    public delegate void Callback();
+    public delegate void Callback(Collision collision);
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class CheckCollision : MonoBehaviour
         // Call the callback method if it's set
         if (callback != null && collision.transform.CompareTag(targetTag))
         {
-            callback();
+            callback(collision);
         }
 
         Destroy(gameObject);

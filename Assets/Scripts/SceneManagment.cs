@@ -9,4 +9,9 @@ public class SceneManagment : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

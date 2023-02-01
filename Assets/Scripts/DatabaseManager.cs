@@ -26,8 +26,6 @@ public class DatabaseManager : MonoBehaviour
 
     private void GetPOILocations()
     {
-        FirebaseStorage storage = FirebaseStorage.DefaultInstance;
-
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             FirebaseDatabase.DefaultInstance
            .GetReference("POI")

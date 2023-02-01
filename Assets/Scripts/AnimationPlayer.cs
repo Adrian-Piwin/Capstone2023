@@ -13,13 +13,12 @@ public class AnimationPlayer : MonoBehaviour
         Instance = this;
     }
 
-    public IEnumerator PlayAnimation(Animation animator, string animation, string defaultAnimation, float animationDuration)
+    public IEnumerator PlayAnimation(Animator animator, string animation, bool overwrite = false)
     {
-        if (isAnimationPlaying) yield break;
+        if (isAnimationPlaying && !overwrite) yield break;
         isAnimationPlaying = true;
         animator.Play(animation);
-        yield return new WaitForSeconds(animationDuration);
-        animator.Play(defaultAnimation);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         isAnimationPlaying = false;
     }
 }

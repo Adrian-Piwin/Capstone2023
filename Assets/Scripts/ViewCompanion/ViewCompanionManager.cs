@@ -11,11 +11,8 @@ public class ViewCompanionManager : MonoBehaviour
     public List<string> phrases;
 
     [Header("Animations")]
-    public string defaultAnimation;
     public string startAnimation;
-    public float startAnimationDuration;
     public List<string> animations;
-    public List<float> animationDuration;
 
     [Header("References")]
     public TextMeshProUGUI msgUI;
@@ -72,7 +69,7 @@ public class ViewCompanionManager : MonoBehaviour
         }
     }
 
-    public void HitBear() 
+    public void HitBear(Collision collision) 
     {
         if (TypeOut.Instance.isTalking || AnimationPlayer.Instance.isAnimationPlaying) return;
 
@@ -81,19 +78,21 @@ public class ViewCompanionManager : MonoBehaviour
         phraseIndex = phraseIndex+1 >= phrases.Count ? 0 : phraseIndex+1;
 
         // Do dance
-        StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animation>(), animations[animationIndex], defaultAnimation, animationDuration[animationIndex]));
+        StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animator>(), animations[animationIndex]));
         animationIndex = animationIndex + 1 >= animations.Count ? 0 : animationIndex + 1;
     }
 
     // Set player as ready when plane selected
     private void Setup(Vector3 refPosition) 
     {
+        foreach (var plane in arPlaneManager.trackables)
+            plane.gameObject.SetActive(false);
         arPlaneManager.enabled = false;
         msgUI.text = "";
         bear = Instantiate(bearPrefab, refPosition, Quaternion.identity);
         isPlayerReady = true;
 
-        StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animation>(), startAnimation, defaultAnimation, startAnimationDuration));
+        StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animator>(), startAnimation));
         StartCoroutine(TypeOut.Instance.Type(msgUI, "Hello Student!", false));
     }
 

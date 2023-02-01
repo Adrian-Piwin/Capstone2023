@@ -677,9 +677,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5604334433715212280}
   - component: {fileID: 5177061001194206022}
-  - component: {fileID: 1495254167962720841}
   - component: {fileID: 5418624216727473374}
-  m_Layer: 0
+  - component: {fileID: 1694119003220832389}
+  m_Layer: 9
   m_Name: BearPrefabAR
   m_TagString: Bear
   m_Icon: {fileID: 0}
@@ -716,24 +716,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraName: AR Camera
---- !u!111 &1495254167962720841
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4219529952943571304}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: ed2dd1319165dd14babcf876fb3846f1, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: ed2dd1319165dd14babcf876fb3846f1, type: 2}
-  - {fileID: 7400000, guid: 4ac4539cb1306404c9f0091f51e2191d, type: 2}
-  - {fileID: 7400000, guid: 78891be892f72cc408ea9d284d13be23, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!65 &5418624216727473374
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -747,6 +729,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7961211, y: 3.4416919, z: 1.1144007}
   m_Center: {x: 0.19800432, y: 1.8045256, z: 0.17921016}
+--- !u!95 &1694119003220832389
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4219529952943571304}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5d8f035e14ef0a84fb0e1183613fb68d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &4321597365960184682
 GameObject:
   m_ObjectHideFlags: 0
