@@ -9,8 +9,6 @@ using System;
 
 public class DatabaseScoreManager : MonoBehaviour
 {
-    public bool isLeaderboardReady;
-    public List<PlayerScore> leaderboard = new List<PlayerScore>();
     private DatabaseReference mDatabase;
 
     public static DatabaseScoreManager Instance { get; private set; }
@@ -25,11 +23,12 @@ public class DatabaseScoreManager : MonoBehaviour
         mDatabase = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public void GetLeaderboard()
+    async public Task<List<PlayerScore>> GetScores()
     {
-        UnityMainThreadDispatcher.Instance().Enqueue(() => {
-            FirebaseDatabase.DefaultInstance
-           .GetReference("Leaderboard")
+        List<PlayerScore> pScores = new List<PlayerScore>();
+
+        await FirebaseDatabase.DefaultInstance
+           .GetReference("scores")
            .GetValueAsync().ContinueWith(task =>
            {
                if (task.IsFaulted)
@@ -41,23 +40,48 @@ public class DatabaseScoreManager : MonoBehaviour
                    DataSnapshot snapshot = task.Result;
                    foreach (var place in snapshot.Children)
                    {
-                       leaderboard.Add(JsonUtility.FromJson<PlayerScore>(place.GetRawJsonValue()));
+                       pScores.Add(JsonUtility.FromJson<PlayerScore>(place.GetRawJsonValue()));
                    }
-
-                   isLeaderboardReady = true;
                }
            });
-        });
+
+        return pScores;
+    }
+
+    async public Task<PlayerScore> GetScore(string id)
+    {
+        PlayerScore pScore = null;
+
+        await FirebaseDatabase.DefaultInstance
+           .GetReference("scores")
+           .GetValueAsync().ContinueWith(task =>
+           {
+               if (task.IsFaulted)
+               {
+                   Debug.Log("Firebase error");
+               }
+               else if (task.IsCompleted)
+               {
+                   DataSnapshot snapshot = task.Result;
+                   foreach (var place in snapshot.Children)
+                   {
+                       PlayerScore score = (JsonUtility.FromJson<PlayerScore>(place.GetRawJsonValue()));
+                       if (score.id == id)
+                           pScore = score;
+                   }
+               }
+           });
+
+        return pScore;
     }
 
     public void SaveScore(string id, string name, int score) 
     {
-        string key = mDatabase.Child("Scores").Push().Key;
         PlayerScore entry = new PlayerScore(id, name, score);
         Dictionary<string, System.Object> entryValues = entry.ToDictionary();
         Dictionary<string, System.Object> childUpdates = new Dictionary<string, System.Object>();
         childUpdates["/scores/" + id] = entryValues;
-        childUpdates["/user-scores/" + id] = entryValues;
+        //childUpdates["/user-scores/" + id] = entryValues;
         mDatabase.UpdateChildrenAsync(childUpdates);
     }
 }

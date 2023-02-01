@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using TMPro;
+using System.Threading.Tasks;
 
 public class ARGameManager : MonoBehaviour
 {
@@ -117,7 +118,21 @@ public class ARGameManager : MonoBehaviour
 
             StartCoroutine(TypeOut.Instance.Type(scoreTxt, "Final Score: " + score, false));
 
-            DatabaseScoreManager.Instance.SaveScore("123", "Adrian", score);
+            // Update database                                          REPLACE WITH ID HERE
+            Task<PlayerScore> scoreTask = DatabaseScoreManager.Instance.GetScore("123");
+
+            scoreTask.ContinueWith(task => {
+                if (task.IsFaulted)
+                {
+                    Debug.Log("Firebase error");
+                }
+                else if (task.IsCompleted)
+                {
+                    PlayerScore pScore = task.Result;
+                    if (pScore == null || pScore.score < score) // REPLACE ACC HERE
+                        DatabaseScoreManager.Instance.SaveScore("123", "Adrian", score);
+                }
+            });
         }
     }
 
