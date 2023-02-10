@@ -18,7 +18,7 @@ public class NavigationManager : MonoBehaviour
 
     [Header("References")]
     public Image indicator;
-    public GameObject btnStartGame;
+    public GameObject btnGetItem;
     public TextMeshProUGUI txtLocationName;
     public TextMeshProUGUI txtLocationDesc;
     public TextMeshProUGUI txtLocationDistance;
@@ -38,6 +38,8 @@ public class NavigationManager : MonoBehaviour
     private bool isFirebaseLocationsReady;
     private bool isFirebaseImageReady;
 
+    private bool didUnlockTodaysItem;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +55,7 @@ public class NavigationManager : MonoBehaviour
             Input.gyro.enabled = true;
         }
 
+        CheckIfItemGot();
         StartCoroutine(WaitForGPS());
         StartCoroutine(WaitForFirebaseLocation());
         StartCoroutine(WaitForFirebaseImage());
@@ -132,10 +135,18 @@ public class NavigationManager : MonoBehaviour
         indicator.color = Color.Lerp(closeColor, farColor, Mathf.InverseLerp(thresholdMin, thresholdMax, (float)distance));
 
         // Setup game button if close enough
-        if (distance < thresholdMin)
-            btnStartGame.SetActive(true);
-        else
-            btnStartGame.SetActive(false);
+        if (distance < thresholdMin && !didUnlockTodaysItem)
+            btnGetItem.SetActive(true);
     }
 
+
+    private void CheckIfItemGot() 
+    {
+        int lastDayItemRecieved = PlayerPrefs.GetInt("lastDayItemRecieved", -1);
+
+        if (lastDayItemRecieved == DateTime.Today.Day)
+            didUnlockTodaysItem = true;
+        else
+            didUnlockTodaysItem = false;
+    }
 }
