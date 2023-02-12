@@ -90,6 +90,7 @@ public class ViewCompanionManager : MonoBehaviour
         arPlaneManager.enabled = false;
         msgUI.text = "";
         bear = Instantiate(bearPrefab, refPosition, Quaternion.identity);
+        bear.name = "BearPrefabAR";
         isPlayerReady = true;
 
         StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animator>(), startAnimation));

@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Leaderboard.unity
     guid: 958a5415523809c4eb44da4c416fc548
+  - enabled: 1
+    path: Assets/Scenes/ChatbotAI.unity
+    guid: 9db73754398839a4ba3462f8fdccb748
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: a11932271bcc7004690fe7f852542fa3, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0db9845200bb4884db3c168c1fddd79a, type: 2}

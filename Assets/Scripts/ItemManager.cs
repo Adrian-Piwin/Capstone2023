@@ -17,10 +17,10 @@ public class ItemManager : MonoBehaviour
         return names;
     }
 
-    private List<string> GetUnlockedItemNames()
+    public List<string> GetUnlockedItemNames()
     {
         string namesRaw = PlayerPrefs.GetString("playerItems", null);
-        if (namesRaw == null)
+        if (namesRaw == null || namesRaw == "")
             return null;
 
         string[] namesArray = namesRaw.Split("/");
@@ -41,16 +41,19 @@ public class ItemManager : MonoBehaviour
         List<string> canBeUnlocked = new List<string>();
         if (currentlyUnlocked != null)
             canBeUnlocked = allItems.Except(currentlyUnlocked).ToList();
+        else
+            canBeUnlocked = allItems;
 
         string itemToUnlock = canBeUnlocked[UnityEngine.Random.Range(0, canBeUnlocked.Count - 1)];
-        PlayerPrefs.SetString("playerItems", PlayerPrefs.GetString("playerItems") + "/" + itemToUnlock);
+        PlayerPrefs.SetString("playerItems", PlayerPrefs.GetString("playerItems") == "" ? itemToUnlock : PlayerPrefs.GetString("playerItems") + "/" + itemToUnlock);
 
         return itemToUnlock;
     }
 
     public string GetSelectedItem() 
     {
-        return PlayerPrefs.GetString("playerItemSelected", null);
+        string selection = PlayerPrefs.GetString("playerItemSelected", null);
+        return selection == null || selection == "" ? null : selection;
     }
 
     public void SetSelectedItem(string name) 
