@@ -6,6 +6,7 @@ using Firebase.Database;
 using Firebase.Storage;
 using System.Threading.Tasks;
 using System;
+using Firebase.Auth;
 
 public class DatabaseScoreManager : MonoBehaviour
 {

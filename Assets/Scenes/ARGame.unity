@@ -556,7 +556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768f3da7cc23e18419d614442a7f1559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLeaderboardReady: 0
 --- !u!114 &268247421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1730,7 +1729,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: ViewCompanion
+          m_StringArgument: SampleScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1993346615

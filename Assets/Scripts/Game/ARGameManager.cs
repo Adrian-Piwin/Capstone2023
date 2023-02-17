@@ -118,8 +118,17 @@ public class ARGameManager : MonoBehaviour
 
             StartCoroutine(TypeOut.Instance.Type(scoreTxt, "Final Score: " + score, false));
 
-            // Update database                                          REPLACE WITH ID HERE
-            Task<PlayerScore> scoreTask = DatabaseScoreManager.Instance.GetScore("123");
+            // Get user
+            Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+            Firebase.Auth.FirebaseUser user = auth.CurrentUser;
+            if (user == null) 
+            {
+                Debug.Log("Problem finding user");
+                return;
+            }
+
+            // Update database                                         
+            Task<PlayerScore> scoreTask = DatabaseScoreManager.Instance.GetScore(user.UserId);
 
             scoreTask.ContinueWith(task => {
                 if (task.IsFaulted)
@@ -129,8 +138,10 @@ public class ARGameManager : MonoBehaviour
                 else if (task.IsCompleted)
                 {
                     PlayerScore pScore = task.Result;
-                    if (pScore == null || pScore.score < score) // REPLACE ACC HERE
-                        DatabaseScoreManager.Instance.SaveScore("123", "Adrian", score);
+                    if (pScore == null || pScore.score < score)
+                    {
+                        DatabaseScoreManager.Instance.SaveScore(user.UserId, user.DisplayName, score);
+                    }
                 }
             });
         }
