@@ -15,6 +15,7 @@ public class NavigationManager : MonoBehaviour
 
     public Color farColor;
     public Color closeColor;
+    public float maxLoadTime;
 
     [Header("References")]
     public Image indicator;
@@ -120,8 +121,9 @@ public class NavigationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isGPSReady || !isFirebaseLocationsReady || !isFirebaseImageReady) return;
-        else loadingScreen.SetActive(false);
+        maxLoadTime -= Time.deltaTime;
+        if ((!isGPSReady || !isFirebaseLocationsReady || !isFirebaseImageReady) || maxLoadTime > 0) return;
+        loadingScreen.SetActive(false);
 
         // Update current location
         currentLat = gpsGetLocation.userLocationLatitude;

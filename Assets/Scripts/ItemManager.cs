@@ -27,7 +27,8 @@ public class ItemManager : MonoBehaviour
         List<string> names = new List<string>(); 
         foreach (var name in namesArray)
         {
-            names.Add(name);
+            if (name != "" || name != " ")
+                names.Add(name);
         }
 
         return names;

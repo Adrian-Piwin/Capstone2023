@@ -19,12 +19,13 @@ public class ViewCompanionEquipItem : MonoBehaviour
         availableItemList = itemManager.GetUnlockedItemNames();
         if (currentSelectedItem == null && availableItemList == null) return;
 
-        // Make equipped item first in list
-        if (currentSelectedItem != null)
+        // Make nothing first in list
+        if (availableItemList == null)
         {
-            availableItemList.Remove(currentSelectedItem);
-            availableItemList.Insert(0, currentSelectedItem);
+            availableItemList = new List<string>();
         }
+
+        availableItemList.Insert(0, "nothing");
     }
 
     public void SwapItemBtnClicked()
@@ -40,11 +41,11 @@ public class ViewCompanionEquipItem : MonoBehaviour
             if (bear == null) return;
             bearAttachItem = bear.GetComponent<AttachItem>();
         }
-        Debug.Log("bear found");
 
         // Cycle through items, selecting them
         itemIndex++;
         itemIndex = itemIndex >= availableItemList.Count ? 0 : itemIndex;
+        Debug.Log($"on item {availableItemList[itemIndex]}");
         bearAttachItem.SetNewItem(availableItemList[itemIndex]);
         itemManager.SetSelectedItem(availableItemList[itemIndex]);
 

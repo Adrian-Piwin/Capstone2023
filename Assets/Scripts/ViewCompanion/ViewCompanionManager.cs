@@ -71,11 +71,13 @@ public class ViewCompanionManager : MonoBehaviour
 
     public void HitBear(Collision collision) 
     {
-        if (TypeOut.Instance.isTalking || AnimationPlayer.Instance.isAnimationPlaying) return;
+        if (TypeOut.Instance.isTalking) return;
 
         // Say phrase
         StartCoroutine(TypeOut.Instance.Type(msgUI, phrases[phraseIndex], false));
         phraseIndex = phraseIndex+1 >= phrases.Count ? 0 : phraseIndex+1;
+
+        if (AnimationPlayer.Instance.isAnimationPlaying) return;
 
         // Do dance
         StartCoroutine(AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animator>(), animations[animationIndex]));

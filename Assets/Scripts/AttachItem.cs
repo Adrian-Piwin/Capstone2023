@@ -23,6 +23,7 @@ public class AttachItem : MonoBehaviour
         if (attachedObj != null)
             Destroy(attachedObj);
 
-        attachedObj = Instantiate(itemManager.GetItemObject(item), itemParent);
+        if (item != "nothing")
+            attachedObj = Instantiate(itemManager.GetItemObject(item), itemParent);
     }
 }
