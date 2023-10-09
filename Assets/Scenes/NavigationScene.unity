@@ -998,7 +998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &357272095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,9 +1996,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thresholdMax: 300
-  thresholdMin: 5
+  thresholdMin: 20
   farColor: {r: 1, g: 0, b: 0, a: 1}
   closeColor: {r: 0, g: 0.9489832, b: 1, a: 1}
+  maxLoadTime: 10
   indicator: {fileID: 1534695908}
   btnGetItem: {fileID: 381660305}
   txtLocationName: {fileID: 1747424613}
@@ -2053,7 +2054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGPSReady: 0
-  isUnityRemote: 1
+  isUnityRemote: 0
   gpsUpdateInterval: 0.5
   userLocationLongitude: 0
   userLocationLatitude: 0

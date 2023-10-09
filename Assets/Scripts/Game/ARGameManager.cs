@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 public class ARGameManager : MonoBehaviour
 {
+    /*
     [Header("Settings")]
     public float gameDuration;
     public float beatSpawnInterval;
@@ -207,5 +208,5 @@ public class ARGameManager : MonoBehaviour
     private void UpdateScore() 
     {
         scoreTxt.text = "Score: " + score.ToString();
-    }
+    }*/
 }
