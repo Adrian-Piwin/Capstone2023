@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 720367581721266743}
   m_Layer: 5
-  m_Name: ScoreChild
+  m_Name: NameChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 9102134261899006288}
   - component: {fileID: 7564046003299636427}
   m_Layer: 5
-  m_Name: Score
+  m_Name: ID
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,10 +104,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 03c2f4eb1b48d114aa2e8781d1d8e2c9, type: 2}
-  m_sharedMaterial: {fileID: 1515084305588385049, guid: 03c2f4eb1b48d114aa2e8781d1d8e2c9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d68f47037374aec4ea40c2e439387b0f, type: 2}
+  m_sharedMaterial: {fileID: 9093197149171194712, guid: d68f47037374aec4ea40c2e439387b0f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -241,8 +241,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 03c2f4eb1b48d114aa2e8781d1d8e2c9, type: 2}
-  m_sharedMaterial: {fileID: 1515084305588385049, guid: 03c2f4eb1b48d114aa2e8781d1d8e2c9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d68f47037374aec4ea40c2e439387b0f, type: 2}
+  m_sharedMaterial: {fileID: 9093197149171194712, guid: d68f47037374aec4ea40c2e439387b0f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

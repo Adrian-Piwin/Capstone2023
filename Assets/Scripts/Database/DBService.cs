@@ -1,8 +1,7 @@
-using UnityEngine;
 using System.Data;
 using System.Data.SqlClient;
 
-public class DBService : MonoBehaviour
+public class DBService
 {
     private string connectionString;
     private SqlConnection connection;
@@ -19,7 +18,7 @@ public class DBService : MonoBehaviour
     }
 
     // Close the database connection when the object is destroyed
-    private void OnDestroy()
+    public void dispose()
     {
         if (connection != null && connection.State == ConnectionState.Open)
         {
@@ -28,7 +27,7 @@ public class DBService : MonoBehaviour
     }
 
     // Execute a SQL query and return the result as a DataTable
-    public DataTable ExecuteQuery(string query)
+    public DataTable executeQuery(string query)
     {
         DataTable dataTable = new DataTable();
         using (SqlCommand command = new SqlCommand(query, connection))
@@ -42,25 +41,11 @@ public class DBService : MonoBehaviour
     }
 
     // Execute a non-query SQL command (e.g., INSERT, UPDATE, DELETE)
-    public int ExecuteNonQuery(string query)
+    public int executeNonQuery(string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))
         {
             return command.ExecuteNonQuery();
         }
-    }
-
-    // Example: Select all players from a "players" table
-    public DataTable SelectAllPlayers()
-    {
-        string query = "SELECT * FROM players";
-        return ExecuteQuery(query);
-    }
-
-    // Example: Insert a new player into the "players" table
-    public int InsertPlayer(string playerName)
-    {
-        string query = $"INSERT INTO players (Name) VALUES ('{playerName}')";
-        return ExecuteNonQuery(query);
     }
 }
