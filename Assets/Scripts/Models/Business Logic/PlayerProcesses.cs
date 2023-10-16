@@ -9,22 +9,23 @@ using System.Xml.Linq;
 public  class PlayerProcesses
 {
     private DBService dbContext;
+    private string codeContext;
 
-    public PlayerProcesses(DBService context)
+    public PlayerProcesses(DBService context, string code)
     {
         dbContext = context;
+        codeContext = code;
     }
 
-    public bool createPlayer(string name, string code)
+    public bool createPlayer(string name)
     {
-        code = code.Trim();
-        int a = dbContext.executeNonQuery($"insert into Players (lobbyID, username) values ('{code}', '{name}')");
+        int a = dbContext.executeNonQuery($"insert into Players (lobbyID, username) values ('{codeContext}', '{name}')");
         return a > 0; 
     }
 
-    public List<Player> getPlayers(string code)
+    public List<Player> getPlayers()
     {
-        return DataTableMapper.MapDataTableToObjectList<Player>(dbContext.executeQuery($"select * from Players where lobbyID = {code}"));
+        return DataTableMapper.MapDataTableToObjectList<Player>(dbContext.executeQuery($"select * from Players where lobbyID = {codeContext}"));
     }
 }
 

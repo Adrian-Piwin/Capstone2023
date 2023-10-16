@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
     public TMP_InputField codeInput;
     public TMP_InputField nameInput;
 
+    private DBService dbContext;
+
     private void Start()
     {
         string code = PlayerPrefs.GetString("lobbyCode", "");
         if (code != "")
-            SceneUtility.instance.ChangeScene("Lobby");
+            SceneManager.LoadScene("Lobby");
+
+        dbContext = new DBService();
     }
 
     public void onJoinPressed()
@@ -32,30 +37,27 @@ public class MainMenuController : MonoBehaviour
             return;
         }
 
-        DBService context = new DBService();
-
         // Check if lobby is valid
-        CampusProcesses campusProccesses = new CampusProcesses(context);
-        if (!campusProccesses.isLobbyValid(code))
+        CampusProcesses campusProccesses = new CampusProcesses(dbContext, code);
+        if (!campusProccesses.isLobbyValid())
         {
             MsgUtility.instance.DisplayMsg("Cannot find a lobby with that code.", MsgType.Error);
             return;
         }
 
         // Create player
-        PlayerProcesses playerProcesses = new PlayerProcesses(context);
-        if (!playerProcesses.createPlayer(name, code))
+        PlayerProcesses playerProcesses = new PlayerProcesses(dbContext, code);
+        if (!playerProcesses.createPlayer(name))
         {
             MsgUtility.instance.DisplayMsg("Failed to create player, try again later.", MsgType.Error);
             return;
         }
 
-        context.dispose();
-
-        // Save lobby context to player prefs
+        // Save lobby dbContext to player prefs
         PlayerPrefs.SetString("lobbyCode", code);
 
         // Go to next scene
+        dbContext.dispose();
         SceneUtility.instance.ChangeScene("Lobby");
     }
 }

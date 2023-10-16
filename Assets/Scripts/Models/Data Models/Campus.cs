@@ -10,4 +10,5 @@ public class Campus
     public string lobbyID { get; set; }
     public string name { get; set; }
     public string map { get; set; }
+    public bool gameStarted { get; set; }
 }
