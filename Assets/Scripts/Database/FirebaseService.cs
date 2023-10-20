@@ -36,7 +36,7 @@ public class FirebaseService
                 string downloadUrl = urlTask.Result.ToString();
 
                 // Download the image as a byte array
-                var downloadTask = reference.GetBytesAsync(1024 * 1024);
+                var downloadTask = reference.GetBytesAsync(2048 * 2048);
 
                 await downloadTask;
 

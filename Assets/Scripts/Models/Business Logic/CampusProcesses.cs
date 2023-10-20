@@ -24,6 +24,12 @@ public  class CampusProcesses
         codeContext = code;
     }
 
+    public Campus getCampus() 
+    {
+        Campus found = DataTableMapper.MapDataRowToObject<Campus>(dbContext.executeQuery($"select * from Campus where lobbyID = {codeContext}"));
+        return found;
+    }
+
     public bool isLobbyValid()
     {
         Campus found = DataTableMapper.MapDataRowToObject<Campus>(dbContext.executeQuery($"select * from Campus where lobbyID = {codeContext}"));

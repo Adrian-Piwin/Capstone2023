@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class POI
 {
-    public string name;
-    public string description;
-    public string latitude;
-    public string longitude;
-    public string imageName;
-
-    public POI(string name, string description, string latitude, string longitude, string imageName) 
-    {
-        this.name = name;
-        this.description = description;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.imageName = imageName;
-    }
+    public int id { get; set; }
+    public int campusID { get; set; }
+    public int order { get; set; }
+    public string name { get; set; }
+    public string description { get; set; }
+    public string map { get; set; }
+    public string image { get; set; }
 }

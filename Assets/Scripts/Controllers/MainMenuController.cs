@@ -13,9 +13,9 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
-        string code = PlayerPrefs.GetString("lobbyCode", "");
-        if (code != "")
-            SceneManager.LoadScene("Lobby");
+        //string code = PlayerPrefs.GetString("lobbyCode", "");
+        //if (code != "")
+        //    SceneManager.LoadScene("Lobby");
 
         dbContext = new DBService();
     }
@@ -24,7 +24,7 @@ public class MainMenuController : MonoBehaviour
     {
         string code = codeInput.text.Trim();
         string name = nameInput.text.Trim();
-        Debug.Log(code.Length);
+
         if (code.Length < 5)
         {
             MsgUtility.instance.DisplayMsg("Please enter a valid code", MsgType.Error);

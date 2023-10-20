@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 948331c610beaaa4c8d91e2071c27ac1
+  - enabled: 1
+    path: Assets/Scenes/Quest.unity
+    guid: 92fd8322a07c5f041901ad276beadc16
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: a11932271bcc7004690fe7f852542fa3, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0db9845200bb4884db3c168c1fddd79a, type: 2}
