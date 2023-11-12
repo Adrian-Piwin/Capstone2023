@@ -47,7 +47,9 @@ public class MainMenuController : MonoBehaviour
 
         // Create player
         PlayerProcesses playerProcesses = new PlayerProcesses(dbContext, code);
-        if (!playerProcesses.createPlayer(name))
+        Player player = playerProcesses.createPlayer(name);
+
+        if (player == null)
         {
             MsgUtility.instance.DisplayMsg("Failed to create player, try again later.", MsgType.Error);
             return;
@@ -55,6 +57,7 @@ public class MainMenuController : MonoBehaviour
 
         // Save lobby dbContext to player prefs
         PlayerPrefs.SetString("lobbyCode", code);
+        PlayerPrefs.SetInt("playerID", player.id);
 
         // Go to next scene
         dbContext.dispose();

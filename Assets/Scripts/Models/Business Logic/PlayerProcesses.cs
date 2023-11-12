@@ -17,10 +17,12 @@ public  class PlayerProcesses
         codeContext = code;
     }
 
-    public bool createPlayer(string name)
+    public Player createPlayer(string name)
     {
-        int a = dbContext.executeNonQuery($"insert into Players (lobbyID, username) values ('{codeContext}', '{name}')");
-        return a > 0; 
+        dbContext.executeNonQuery($"insert into Players (lobbyID, username, status) values ('{codeContext}', '{name}', '1')");
+
+        Player player = DataTableMapper.MapDataRowToObject<Player>(dbContext.executeQuery($"select top 1 * from players where username = '{name}' order by id desc"));
+        return player;
     }
 
     public List<Player> getPlayers()

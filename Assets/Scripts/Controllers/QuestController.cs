@@ -9,6 +9,7 @@ public class QuestController : MonoBehaviour
 {
     public GameObject poiView;
     public GameObject mapView;
+    public GameObject leaderboardView;
 
     public RawImage mapImage;
     public RawImage poiImage;
@@ -23,6 +24,9 @@ public class QuestController : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+        // Start on map view
+        toggleView("map");
+
         // Get context of code
         string code = PlayerPrefs.GetString("lobbyCode", "");
 
@@ -50,16 +54,10 @@ public class QuestController : MonoBehaviour
         dest.texture = texture;
     }
 
-    public void togglePOIView() 
+    public void toggleView(string view)
     {
-        mapView.SetActive(false);
-        poiView.SetActive(true);
+        mapView.SetActive(view == "map");
+        poiView.SetActive(view == "poi");
+        leaderboardView.SetActive(view == "leaderboard");
     }
-
-    public void toggleMapView()
-    {
-        mapView.SetActive(true);
-        poiView.SetActive(false);
-    }
-
 }

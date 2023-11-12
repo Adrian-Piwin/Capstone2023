@@ -1,11 +1,15 @@
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-public class LobbyController : MonoBehaviour
+public class LeaderboardController : MonoBehaviour 
 {
+    public TextMeshProUGUI playerPlaceUI;
+
     public float childHeight;
     public GameObject playerChildPrefab;
     public RectTransform contentParent;
@@ -15,14 +19,17 @@ public class LobbyController : MonoBehaviour
     private float timePassed = 0f;
     private float currentHeight;
     private List<GameObject> playerChildren = new List<GameObject>();
+    private List<Player> players;
 
     private DBService dbContext;
     private PlayerProcesses playerProcesses;
-    private CampusProcesses campusProcesses;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Init
+        players = new List<Player>();
+
         // Get context of code
         string code = PlayerPrefs.GetString("lobbyCode", "");
         playerID = PlayerPrefs.GetInt("playerID", -1);
@@ -31,10 +38,7 @@ public class LobbyController : MonoBehaviour
         dbContext = new DBService();
 
         playerProcesses = new PlayerProcesses(dbContext, code);
-        campusProcesses = new CampusProcesses(dbContext, code);
         loadPlayers();
-
-        MsgUtility.instance.DisplayMsg("Please wait for the game to start.", MsgType.Info);
     }
 
     void Update()
@@ -53,26 +57,22 @@ public class LobbyController : MonoBehaviour
 
     private void loadPlayers()
     {
-        if (campusProcesses.isGameStarted()) { 
-            StartCoroutine(InitiateQuest());
-            return;
-        }
-
         currentHeight = 0;
         foreach (GameObject child in playerChildren)
         {
             Destroy(child);
         }
         playerChildren.Clear();
+        players.Clear();
 
-        List<Player> players = playerProcesses.getPlayers().OrderByDescending(o => o.id).ToList();
+        players = playerProcesses.getPlayers();
         foreach (Player player in players)
         {
-            AddToLobby(player);
+            AddToLeaderboard(player);
         }
     }
 
-    private void AddToLobby(Player player)
+    private void AddToLeaderboard(Player player)
     {
         GameObject playerChild = Instantiate(playerChildPrefab, contentParent);
         var rt = playerChild.GetComponent<RectTransform>();
@@ -81,23 +81,26 @@ public class LobbyController : MonoBehaviour
         currentHeight += childHeight;
         contentParent.GetComponent<RectTransform>().sizeDelta = new Vector2(contentParent.GetComponent<RectTransform>().sizeDelta.x, currentHeight);
 
+        // Get the place of this plater
+        int place = GetPlayersPlace(player);
+
         // Name
         playerChild.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.username;
         // Score
-        playerChild.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = player.id.ToString();
+        playerChild.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"#{place}";
 
         if (player.id == playerID)
+        {
             playerChild.transform.GetChild(2).gameObject.SetActive(true);
+            playerPlaceUI.text = $"Your Place: {place}";
+        }
 
         playerChildren.Add(playerChild);
     }
 
-    IEnumerator InitiateQuest()
+    private int GetPlayersPlace(Player player)
     {
-        timerEnabled = false;
-        MsgUtility.instance.DisplayMsg("Get ready, your quest begins now!", MsgType.Info);
-        yield return new WaitForSeconds(3);
-        dbContext.dispose();
-        SceneUtility.instance.ChangeScene("Quest");
+        List<Player> orderedPlayers = players.OrderByDescending(p => p.status).ToList();
+        return orderedPlayers.FindIndex(obj => obj.id == player.id) + 1;
     }
 }
