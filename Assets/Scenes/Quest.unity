@@ -584,6 +584,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -657,6 +658,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af049ee557fc41a4789cd4b9b3e5c2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &525882892
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +851,7 @@ GameObject:
   - component: {fileID: 684327840}
   - component: {fileID: 684327841}
   - component: {fileID: 684327842}
+  - component: {fileID: 684327843}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -872,6 +886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b04ccd9397c03c419f0f7155431014a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  qrCodeController: {fileID: 684327843}
   poiView: {fileID: 1025423152}
   mapView: {fileID: 1466189055}
   leaderboardView: {fileID: 1186756587}
@@ -897,6 +912,19 @@ MonoBehaviour:
   childHeight: 100
   playerChildPrefab: {fileID: 1002840970861081407, guid: 09c7174a85aa99e40b6c96a8f552a029, type: 3}
   contentParent: {fileID: 337663368}
+--- !u!114 &684327843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684327838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49baa05b34218ed48b8673e3586a86f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isScanning: 0
 --- !u!1 &723343874
 GameObject:
   m_ObjectHideFlags: 0
@@ -3586,7 +3614,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2092189212}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 684327841}
+        m_TargetAssemblyTypeName: QuestController, Assembly-CSharp
+        m_MethodName: toggleQRScanner
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: QRScan
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2092189212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3850,7 +3890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7538578694285561224, guid: 29c272966a1098b449ec9bff7466b3d8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7538578694285561225, guid: 29c272966a1098b449ec9bff7466b3d8, type: 3}
       propertyPath: m_Pivot.x

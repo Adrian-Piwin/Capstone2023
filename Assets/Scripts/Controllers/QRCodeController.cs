@@ -11,7 +11,7 @@ public class QRCodeController : MonoBehaviour
 
     private WebCamTexture webcamTexture;
     private Rect screenRect;
-    private bool isScanning = false;
+    public bool isScanning = false;
 
     // This is the text we are looking for to validate scan
     private string targetValue;
@@ -19,10 +19,6 @@ public class QRCodeController : MonoBehaviour
     private void Start()
     {
         DBService dbContext = new DBService();
-
-        PlayerPrefs.SetString("lobbyCode", "12345");
-        PlayerPrefs.SetInt("campusID", 10);
-        PlayerPrefs.SetInt("playerID", 6);
 
         string code = PlayerPrefs.GetString("lobbyCode", "");
         string campusID = PlayerPrefs.GetInt("campusID", -1).ToString();
@@ -36,12 +32,16 @@ public class QRCodeController : MonoBehaviour
         POI targetPOI = poiProcesses.getPOI((player.status + 1).ToString());
         targetValue = $"{code}:{targetPOI.name}";
         Debug.Log(targetValue);
-        
-        screenRect = new Rect(0, 0, Screen.width, Screen.height);
-        StartQRCodeScanner();
+
+        float cameraWidth = Screen.width * 0.6f; // Adjust the width as a percentage of the screen width (e.g., 60%)
+        float cameraHeight = cameraWidth * (webcamTexture.height / (float)webcamTexture.width); // Maintain aspect ratio
+        float xPosition = (Screen.width - cameraWidth) / 2; // Center horizontally
+        float yPosition = (Screen.height - cameraHeight) * 0.3f; // Adjust the Y position to be lower (e.g., 30% from the top)
+
+        screenRect = new Rect(xPosition, yPosition, cameraWidth, cameraHeight);
     }
 
-    private void StartQRCodeScanner()
+    public void StartQRCodeScanner()
     {
         // Start the camera
         webcamTexture = new WebCamTexture();
@@ -49,6 +49,16 @@ public class QRCodeController : MonoBehaviour
 
         // Begin scanning
         isScanning = true;
+    }
+
+    public void StopQRCodeScanner()
+    {
+        if (webcamTexture != null && webcamTexture.isPlaying)
+        {
+            webcamTexture.Stop();
+        }
+
+        isScanning = false;
     }
 
     private void Update()
@@ -105,7 +115,8 @@ public class QRCodeController : MonoBehaviour
 
     private void OnGUI()
     {
-        // Rotate the camera feed 90 degrees counterclockwise
+        if (!isScanning) return; 
+
         Matrix4x4 matrixBackup = GUI.matrix;
         GUIUtility.RotateAroundPivot(90, new Vector2(Screen.width / 2, Screen.height / 2));
         GUI.DrawTexture(screenRect, webcamTexture, ScaleMode.ScaleToFit);

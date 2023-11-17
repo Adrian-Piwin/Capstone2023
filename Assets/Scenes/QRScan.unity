@@ -638,6 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1180785378}
   - component: {fileID: 1180785379}
+  - component: {fileID: 1180785380}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -653,7 +654,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180785377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.90119016, y: -0.8104228, z: 143.25409}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -672,7 +673,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49baa05b34218ed48b8673e3586a86f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultText: {fileID: 0}
+--- !u!114 &1180785380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180785377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22cdc045bc2afe746b0d1cb8ac623e35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  qsize: 15
+  fontSize: 15
 --- !u!1 &1219842401
 GameObject:
   m_ObjectHideFlags: 0

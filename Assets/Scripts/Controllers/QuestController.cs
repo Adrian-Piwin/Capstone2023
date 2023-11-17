@@ -7,6 +7,8 @@ using TMPro;
 
 public class QuestController : MonoBehaviour
 {
+    public QRCodeController qrCodeController;
+
     public GameObject poiView;
     public GameObject mapView;
     public GameObject leaderboardView;
@@ -23,6 +25,11 @@ public class QuestController : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+
+        PlayerPrefs.SetString("lobbyCode", "12345");
+        PlayerPrefs.SetInt("campusID", 10);
+        PlayerPrefs.SetInt("playerID", 6);
+
         // Start on map view
         toggleView("map");
 
@@ -58,5 +65,19 @@ public class QuestController : MonoBehaviour
         mapView.SetActive(view == "map");
         poiView.SetActive(view == "poi");
         leaderboardView.SetActive(view == "leaderboard");
+
+        if (qrCodeController.isScanning) 
+        {
+            qrCodeController.StopQRCodeScanner();
+        }
+    }
+
+    public void toggleQRScanner()
+    {
+        mapView.SetActive(false);
+        poiView.SetActive(false);
+        leaderboardView.SetActive(false);
+
+        qrCodeController.StartQRCodeScanner();
     }
 }
