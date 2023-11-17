@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderboardController : MonoBehaviour 
 {
     public TextMeshProUGUI playerPlaceUI;
+    public TextMeshProUGUI playerProgressUI;
+    public Image progressBar;
 
     public float childHeight;
     public GameObject playerChildPrefab;
@@ -21,8 +24,11 @@ public class LeaderboardController : MonoBehaviour
     private List<GameObject> playerChildren = new List<GameObject>();
     private List<Player> players;
 
+    private float startingProgressBarScale;
+
     private DBService dbContext;
     private PlayerProcesses playerProcesses;
+    private POIProcesses poiProcesses;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +38,7 @@ public class LeaderboardController : MonoBehaviour
 
         // Get context of code
         string code = PlayerPrefs.GetString("lobbyCode", "");
+        string lobbyID = PlayerPrefs.GetInt("campusID", -1).ToString();
         playerID = PlayerPrefs.GetInt("playerID", -1);
 
         // Get players from database
@@ -39,6 +46,11 @@ public class LeaderboardController : MonoBehaviour
 
         playerProcesses = new PlayerProcesses(dbContext, code);
         loadPlayers();
+
+        // Handle progress bar
+        startingProgressBarScale = progressBar.transform.localScale.x;
+        poiProcesses = new POIProcesses(dbContext, lobbyID);
+        UpdateProgressBar(players.FirstOrDefault(o => o.id == playerID));
     }
 
     void Update()
@@ -65,7 +77,8 @@ public class LeaderboardController : MonoBehaviour
         playerChildren.Clear();
         players.Clear();
 
-        players = playerProcesses.getPlayers();
+        // Order them by their place
+        players = playerProcesses.getPlayers().OrderByDescending(p => p.status).ToList();
         foreach (Player player in players)
         {
             AddToLeaderboard(player);
@@ -92,7 +105,7 @@ public class LeaderboardController : MonoBehaviour
         if (player.id == playerID)
         {
             playerChild.transform.GetChild(2).gameObject.SetActive(true);
-            playerPlaceUI.text = $"Your Place: {place}";
+            playerPlaceUI.text = $" {GetOrdinalSuffix(place)}";
         }
 
         playerChildren.Add(playerChild);
@@ -100,7 +113,35 @@ public class LeaderboardController : MonoBehaviour
 
     private int GetPlayersPlace(Player player)
     {
-        List<Player> orderedPlayers = players.OrderByDescending(p => p.status).ToList();
-        return orderedPlayers.FindIndex(obj => obj.id == player.id) + 1;
+        return players.FindIndex(obj => obj.id == player.id) + 1;
+    }
+
+    private void UpdateProgressBar(Player player)
+    {
+        int poiTotal = poiProcesses.getAllPOI().Count;
+        float progress = (float)player.status / poiTotal;
+        playerProgressUI.text = $"{poiTotal - player.status} more to go!";
+        progressBar.transform.localScale = new Vector3(startingProgressBarScale * progress, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
+    }
+
+    private string GetOrdinalSuffix(int number)
+    {
+        if (number <= 0)
+        {
+            return number.ToString();
+        }
+
+        if (number % 100 >= 11 && number % 100 <= 13)
+        {
+            return number + "th";
+        }
+
+        switch (number % 10)
+        {
+            case 1: return number + "st";
+            case 2: return number + "nd";
+            case 3: return number + "rd";
+            default: return number + "th";
+        }
     }
 }

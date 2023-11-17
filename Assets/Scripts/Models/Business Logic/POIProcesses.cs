@@ -24,15 +24,21 @@ public  class POIProcesses
         campusContext = campusID;
     }
 
-    public POI getPOI()
+    public POI getPOI(string index)
     {
-        POI found = DataTableMapper.MapDataRowToObject<POI>(dbContext.executeQuery($"select top 1 * from POI where campusID = {campusContext} order by [order] desc"));
+        POI found = DataTableMapper.MapDataRowToObject<POI>(dbContext.executeQuery($"select top 1 * from POI where campusID = {campusContext} and [order] = {index}"));
         return found;
     }
 
     public async Task<byte[]> getImage(string id, string type, string fileName)
     {
         return await fbContext.GetImageBytes($"{campusContext}/{id}/{type}/{fileName}");
+    }
+
+    public List<POI> getAllPOI() 
+    {
+        List<POI> pois = DataTableMapper.MapDataTableToObjectList<POI>(dbContext.executeQuery($"select * from POI where campusID = {campusContext}"));
+        return pois;
     }
 }
 

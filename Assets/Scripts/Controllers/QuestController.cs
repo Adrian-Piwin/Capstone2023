@@ -17,9 +17,8 @@ public class QuestController : MonoBehaviour
     public TextMeshProUGUI poiName;
     public TextMeshProUGUI poiDesc;
 
-    private PlayerProcesses playerProcesses;
-    private CampusProcesses campusProcesses;
     private POIProcesses poiProcesses;
+    private PlayerProcesses playerProcesses;
 
     // Start is called before the first frame update
     async void Start()
@@ -28,18 +27,18 @@ public class QuestController : MonoBehaviour
         toggleView("map");
 
         // Get context of code
-        string code = PlayerPrefs.GetString("lobbyCode", "");
+        string lobbyID = PlayerPrefs.GetString("lobbyCode", "").ToString();
+        string campusID = PlayerPrefs.GetInt("campusID", -1).ToString();
+        string playerID = PlayerPrefs.GetInt("playerID", -1).ToString();
 
         DBService dbContext = new DBService();
         FirebaseService fbContext = new FirebaseService();
 
-        playerProcesses = new PlayerProcesses(dbContext, code);
-        campusProcesses = new CampusProcesses(dbContext, code);
+        poiProcesses = new POIProcesses(fbContext, dbContext, campusID);
+        playerProcesses = new PlayerProcesses(dbContext, lobbyID);
 
-        Campus campus = campusProcesses.getCampus();
-        poiProcesses = new POIProcesses(fbContext, dbContext, campus.id.ToString());
-
-        POI poi = poiProcesses.getPOI();
+        Player player = playerProcesses.getPlayer(playerID);
+        POI poi = poiProcesses.getPOI(player.status.ToString());
         loadImage(mapImage, await poiProcesses.getImage(poi.id.ToString(), "map", poi.map));
         loadImage(poiImage, await poiProcesses.getImage(poi.id.ToString(), "img", poi.image));
 

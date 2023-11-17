@@ -55,8 +55,11 @@ public class MainMenuController : MonoBehaviour
             return;
         }
 
+        Campus campus = campusProccesses.getCampus();
+
         // Save lobby dbContext to player prefs
         PlayerPrefs.SetString("lobbyCode", code);
+        PlayerPrefs.SetInt("campusID", campus.id);
         PlayerPrefs.SetInt("playerID", player.id);
 
         // Go to next scene
