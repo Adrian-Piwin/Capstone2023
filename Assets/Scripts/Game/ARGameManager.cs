@@ -7,8 +7,7 @@ using TMPro;
 using System.Threading.Tasks;
 
 public class ARGameManager : MonoBehaviour
-{
-    /*
+{ 
     [Header("Settings")]
     public float gameDuration;
     public float beatSpawnInterval;
@@ -71,7 +70,7 @@ public class ARGameManager : MonoBehaviour
             {
                 Pose hitPose = hits[0].pose;
                 if (!isGameStarted && !isGameOver)
-                    SetupGame(hitPose.position);
+                    StartCoroutine(SetupGame(hitPose.position));
             }
 
             if (!isGameStarted) return;
@@ -88,10 +87,13 @@ public class ARGameManager : MonoBehaviour
     }
 
     // Set player as ready when plane selected
-    private void SetupGame(Vector3 refPosition)
+    IEnumerator SetupGame(Vector3 refPosition)
     {
-        bear = Instantiate(bearPrefab, refPosition, Quaternion.identity);
         isGameStarted = true;
+        StartCoroutine(TypeOut.Instance.Type(scoreTxt, "Get at least 10 points to clear this checkpoint!", true));
+        yield return new WaitForSeconds(2);
+
+        bear = Instantiate(bearPrefab, refPosition, Quaternion.identity);
         audioSrc.time = 0;
         audioSrc.Play();
         gameTimer = Time.time;
@@ -117,34 +119,15 @@ public class ARGameManager : MonoBehaviour
             currentAnimationPlayer = AnimationPlayer.Instance.PlayAnimation(bear.GetComponent<Animator>(), winAnimation, true);
             StartCoroutine(currentAnimationPlayer);
 
-            StartCoroutine(TypeOut.Instance.Type(scoreTxt, "Final Score: " + score, false));
-
-            // Get user
-            Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-            Firebase.Auth.FirebaseUser user = auth.CurrentUser;
-            if (user == null) 
+            if (score > 10)
             {
-                Debug.Log("Problem finding user");
-                return;
+                PlayerPrefs.SetString("gameStatus", "cleared");
+                StartCoroutine(TypeOut.Instance.Type(scoreTxt, $"You scored {score} points! You cleared this checkpoint!", false));
             }
-
-            // Update database                                         
-            Task<PlayerScore> scoreTask = DatabaseScoreManager.Instance.GetScore(user.UserId);
-
-            scoreTask.ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-                    Debug.Log("Firebase error");
-                }
-                else if (task.IsCompleted)
-                {
-                    PlayerScore pScore = task.Result;
-                    if (pScore == null || pScore.score < score)
-                    {
-                        DatabaseScoreManager.Instance.SaveScore(user.UserId, user.DisplayName, score);
-                    }
-                }
-            });
+            else 
+            {
+                StartCoroutine(TypeOut.Instance.Type(scoreTxt, $"You scored {score} points! Try again to get 10 points to clear this checkpoint!", false));
+            }
         }
     }
 
@@ -208,5 +191,5 @@ public class ARGameManager : MonoBehaviour
     private void UpdateScore() 
     {
         scoreTxt.text = "Score: " + score.ToString();
-    }*/
+    }
 }

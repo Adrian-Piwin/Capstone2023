@@ -42,5 +42,17 @@ public  class PlayerProcesses
     {
         return DataTableMapper.MapDataTableToObjectList<Player>(dbContext.executeQuery($"select * from Players where lobbyID = {codeContext}"));
     }
+
+    // Set the timer for all players in the lobby
+    public void startPlayersTimer(string id) 
+    {
+        dbContext.executeNonQuery($"update players set timer = '{DateTime.Now}' where lobbyID = {codeContext} and id = {id}");
+    }
+
+    // Stop the timer for a specific player
+    public void stopPlayersTimer(string id) 
+    {
+        dbContext.executeNonQuery($"update players set timerEnd = '{DateTime.Now}' where lobbyID = {codeContext} and id = {id}");
+    }
 }
 

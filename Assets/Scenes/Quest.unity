@@ -924,7 +924,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49baa05b34218ed48b8673e3586a86f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questController: {fileID: 684327841}
   isScanning: 0
+  targetValue: 
 --- !u!1 &723343874
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,7 +2213,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000030398369, y: -153.99994}
-  m_SizeDelta: {x: 800, y: 300}
+  m_SizeDelta: {x: 700, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1306031677
 MonoBehaviour:

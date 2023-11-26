@@ -6,20 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Quest.unity
-    guid: 92fd8322a07c5f041901ad276beadc16
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 6f77ab2508a27f64cb512d998978b23b
-  - enabled: 1
-    path: Assets/Scenes/QRScan.unity
-    guid: 76c9d92668c218b46b362de21e52abe0
+    path: Assets/Scenes/FinalLeaderboard.unity
+    guid: d37944fc673d0ab41a45ef09567032d3
   - enabled: 1
     path: Assets/Scenes/ARGame.unity
     guid: 4df2789ca0ea35743ba603db0c311c31
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 6f77ab2508a27f64cb512d998978b23b
+  - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 948331c610beaaa4c8d91e2071c27ac1
+  - enabled: 1
+    path: Assets/Scenes/Quest.unity
+    guid: 92fd8322a07c5f041901ad276beadc16
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: a11932271bcc7004690fe7f852542fa3, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0db9845200bb4884db3c168c1fddd79a, type: 2}

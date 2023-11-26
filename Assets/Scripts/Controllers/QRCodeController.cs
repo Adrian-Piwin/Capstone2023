@@ -6,39 +6,18 @@ using TMPro;
 
 public class QRCodeController : MonoBehaviour
 {
-    private PlayerProcesses playerProcesses;
-    private POIProcesses poiProcesses;
+    public QuestController questController;
 
     private WebCamTexture webcamTexture;
     private Rect screenRect;
     public bool isScanning = false;
 
     // This is the text we are looking for to validate scan
-    private string targetValue;
+    public string targetValue;
 
     private void Start()
     {
-        DBService dbContext = new DBService();
-
-        string code = PlayerPrefs.GetString("lobbyCode", "");
-        string campusID = PlayerPrefs.GetInt("campusID", -1).ToString();
-        string playerID = PlayerPrefs.GetInt("playerID", -1).ToString();
-
-        poiProcesses = new POIProcesses(dbContext, campusID);
-        playerProcesses = new PlayerProcesses(dbContext, code);
-
-        // Set the target POI text
-        Player player = playerProcesses.getPlayer(playerID);
-        POI targetPOI = poiProcesses.getPOI((player.status + 1).ToString());
-        targetValue = $"{code}:{targetPOI.name}";
-        Debug.Log(targetValue);
-
-        float cameraWidth = Screen.width * 0.6f; // Adjust the width as a percentage of the screen width (e.g., 60%)
-        float cameraHeight = cameraWidth * (webcamTexture.height / (float)webcamTexture.width); // Maintain aspect ratio
-        float xPosition = (Screen.width - cameraWidth) / 2; // Center horizontally
-        float yPosition = (Screen.height - cameraHeight) * 0.3f; // Adjust the Y position to be lower (e.g., 30% from the top)
-
-        screenRect = new Rect(xPosition, yPosition, cameraWidth, cameraHeight);
+        screenRect = new Rect(410, 0, Screen.width, Screen.height);
     }
 
     public void StartQRCodeScanner()
@@ -81,23 +60,11 @@ public class QRCodeController : MonoBehaviour
                     if (VerifyScan(result.Text))
                     {
                         isScanning = false;
-                        ScanValid();
+                        questController.validScan();
                     }
                 }
             }
         }
-    }
-
-    private void ScanValid()
-    {
-        // Update status
-        string playerID = PlayerPrefs.GetInt("playerID", -1).ToString();
-        Player player = playerProcesses.getPlayer(playerID);
-        playerProcesses.updatePlayerStatus(playerID, (player.status + 1).ToString());
-
-        // Go back to quest scene
-        MsgUtility.instance.DisplayMsg("Success!", MsgType.Success);
-        SceneUtility.instance.ChangeScene("Quest");
     }
 
     private bool VerifyScan(string value)

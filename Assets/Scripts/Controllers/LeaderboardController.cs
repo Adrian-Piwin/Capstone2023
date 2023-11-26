@@ -119,8 +119,8 @@ public class LeaderboardController : MonoBehaviour
     private void UpdateProgressBar(Player player)
     {
         int poiTotal = poiProcesses.getAllPOI().Count;
-        float progress = (float)player.status / poiTotal;
-        playerProgressUI.text = $"{poiTotal - player.status} more to go!";
+        float progress = player.status == 0 ? 0 : (float)(player.status - 1) / poiTotal;
+        playerProgressUI.text = $"{poiTotal - player.status + 1} more to go!";
         progressBar.transform.localScale = new Vector3(startingProgressBarScale * progress, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
     }
 
